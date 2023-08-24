@@ -28,7 +28,7 @@ public class ObjetoEnviaEmail {
 		this.textoEmail = textoEmail;
 	}
 
-	public void enviarEmail() throws Exception {
+	public void enviarEmail(boolean envioHtml) throws Exception {
 		/* Chamando o properties */
 		Properties properties = new Properties();
 
@@ -54,12 +54,14 @@ public class ObjetoEnviaEmail {
 		message.setFrom(new InternetAddress(userName, nomeRemetente)); /* Quem está enviando */
 		message.setRecipients(Message.RecipientType.TO, toUser); /* Email de destino */
 		message.setSubject(assuntoEmail); /* Assunto do email */
-		message.setText(textoEmail);
-
+		
+		if (envioHtml) {
+			message.setContent(textoEmail, "text/html; charset=utf-8");
+		} else {			
+			message.setText(textoEmail);
+		}
+		
 		Transport.send(message);
-
-		System.out.println("============= VOU ENVIAR =============");
-		System.out.println(session);
 	}
 
 }
